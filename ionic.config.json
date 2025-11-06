@@ -1,0 +1,7 @@
+{
+  "name": "ghiblipedia",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
