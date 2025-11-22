@@ -14,4 +14,23 @@
   </ion-header>
 
   <app-explore-container name="Tab 1 page"></app-explore-container>
+
+  @for (movie of moviesResource.value(); track movie.id) {
+  <ion-card>
+    <img [src]="movie.image" />
+    <ion-card-header>
+      <ion-card-title>{{ movie.title }}</ion-card-title>
+      <ion-card-subtitle>{{ movie.original_title }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ movie.description }}
+    </ion-card-content>
+  </ion-card>
+
+
+  }
+  <!-- Empty -->
+  @empty {
+  <p>There are no movies</p>
+  }
 </ion-content>
