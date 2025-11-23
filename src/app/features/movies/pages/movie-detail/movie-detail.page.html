@@ -16,10 +16,7 @@
   }
 
   @if (movieResource.hasValue()) {
-  <!-- Movie Banner -->
   <img [src]="movieResource.value().image" [alt]="movieResource.value().title" />
-
-  <!-- Main Info Card -->
   <ion-card>
 
     <ion-card-content>
