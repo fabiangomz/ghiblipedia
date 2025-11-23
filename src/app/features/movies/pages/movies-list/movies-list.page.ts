@@ -26,6 +26,7 @@ import {
   IonCol,
 } from '@ionic/angular/standalone';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-movies-list',
