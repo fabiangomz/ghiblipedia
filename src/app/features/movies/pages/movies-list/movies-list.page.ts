@@ -7,7 +7,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { MoviesService } from '../api/movies/movies.service';
+import { MoviesService } from '../../services/movies.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import {
   IonCard,
@@ -15,12 +15,22 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonButton,
+  IonIcon,
+  IonImg,
+  IonItem,
+  IonLabel,
+  IonThumbnail,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from '@ionic/angular/standalone';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-movies-list',
+  templateUrl: './movies-list.page.html',
+  styleUrls: ['./movies-list.page.scss'],
   standalone: true,
   imports: [
     IonHeader,
@@ -30,11 +40,21 @@ import {
     IonCard,
     IonCardContent,
     IonCardHeader,
+    IonGrid,
+    IonRow,
+    IonCol,
     IonCardSubtitle,
     IonCardTitle,
+    IonButton,
+    IonThumbnail,
+    IonIcon,
+    IonItem,
+    IonLabel,
+    IonImg,
+    RouterLink,
   ],
 })
-export class HomePage {
+export class MoviesListPage {
   moviesService = inject(MoviesService);
 
   moviesResource = rxResource({
