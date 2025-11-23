@@ -1,29 +1,32 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
+import { MoviesService } from '../api/movies/movies.service';
+import { rxResource } from '@angular/core/rxjs-interop';
+import {
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
 } from '@ionic/angular/standalone';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import { MoviesService } from '../movies/movies.service';
-import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss'],
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
+  standalone: true,
   imports: [
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
-    ExploreContainerComponent,
     IonCard,
     IonCardContent,
     IonCardHeader,
@@ -31,7 +34,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
     IonCardTitle,
   ],
 })
-export class Tab1Page {
+export class HomePage {
   moviesService = inject(MoviesService);
 
   moviesResource = rxResource({
