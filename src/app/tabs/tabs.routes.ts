@@ -28,11 +28,6 @@ export const routes: Routes = [
           ).then((m) => m.FavoritesListPage),
       },
       {
-        path: 'search',
-        loadComponent: () =>
-          import('../search/search.page').then((m) => m.SearchPage),
-      },
-      {
         path: 'settings',
         loadComponent: () =>
           import('../features/settings/pages/settings/settings.page').then(

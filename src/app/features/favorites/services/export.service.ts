@@ -1,6 +1,8 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
-import { Movie } from '../../movies/interfaces/movie.interface';
 import { FavoritesService } from './favorites.service';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +10,7 @@ import { FavoritesService } from './favorites.service';
 export class ExportService {
   favoritesService = inject(FavoritesService);
   private favorites = this.favoritesService.getFavorites();
+  platform = Capacitor.getPlatform();
 
   exportToCSV() {
     if (this.favorites().length === 0) {
@@ -51,11 +54,44 @@ export class ExportService {
     return value;
   }
 
+  async downloadIOS() {
+    const csvContent = this.exportToCSV()!;
+    const filename = `ghiblipedia-favorites-${
+      new Date().toISOString().split('T')[0]
+    }.csv`;
+
+    const { uri } = await Filesystem.writeFile({
+      path: filename,
+      data: csvContent,
+      directory: Directory.Documents,
+      encoding: Encoding.UTF8,
+    });
+
+    if (!uri) {
+      throw new Error('Error saving file. No URI returned.');
+    }
+
+    await Share.share({
+      title: 'Favorite Movies',
+      text: 'Here are my favorite movies!',
+      url: uri,
+      dialogTitle: 'Share your favorites',
+    });
+
+    return true;
+  }
   downloadCSV() {
     const csvContent = this.exportToCSV();
+    const filename = `ghiblipedia-favorites-${
+      new Date().toISOString().split('T')[0]
+    }.csv`;
 
     if (!csvContent) {
       return false;
+    }
+
+    if (this.platform === 'ios') {
+      return this.downloadIOS();
     }
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
