@@ -22,7 +22,7 @@
     </ion-list-header>
     <ion-item>
       Export favorite movies
-      <ion-button slot="end" (click)="favoritesService.clearAll()">Export</ion-button>
+      <ion-button slot="end" (click)="exportFavorites()">Export</ion-button>
     </ion-item>
     <ion-item>
       Delete all favorite movies
@@ -34,4 +34,7 @@
   <ion-alert trigger="present-alert" header="Delete all favorites" [buttons]="alertButtons"></ion-alert>
 
 
-</ion-content>
+
+</ion-content> <ion-toast [isOpen]="isToastOpen()" [message]="toastMessage()" positionAnchor="tab-bar" [duration]="2000"
+  position="bottom" (didDismiss)="isToastOpen.set(false)">
+</ion-toast>

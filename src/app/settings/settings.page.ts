@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
@@ -12,9 +12,11 @@ import {
   IonListHeader,
   IonToggle,
   IonAlert,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { FavoritesService } from '../features/favorites/services/favorites.service';
 import { ThemeService } from '../features/settings/services/theme-service.service';
+import { ExportService } from '../features/favorites/services/export.service';
 
 @Component({
   selector: 'app-settings',
@@ -34,12 +36,15 @@ import { ThemeService } from '../features/settings/services/theme-service.servic
     IonToggle,
     IonToolbar,
     IonAlert,
+    IonToast,
   ],
 })
 export class SettingsPage {
   favoritesService = inject(FavoritesService);
+  exportService = inject(ExportService);
   themeService = inject(ThemeService);
-  paletteToggle = false;
+  isToastOpen = signal(false);
+  toastMessage = signal('');
 
   public alertButtons = [
     {
@@ -51,11 +56,27 @@ export class SettingsPage {
       role: 'destructive',
       handler: () => {
         this.favoritesService.clearAll();
+        this.showToast('All favorites deleted');
       },
     },
   ];
 
+  exportFavorites() {
+    const success = this.exportService.downloadCSV();
+
+    if (success) {
+      this.showToast('Favorites exported successfully');
+    } else {
+      this.showToast('No favorites to export');
+    }
+  }
+
   toggleChange(event: CustomEvent) {
     this.themeService.setDarkMode(event.detail.checked);
+  }
+
+  showToast(message: string) {
+    this.toastMessage.set(message);
+    this.isToastOpen.set(true);
   }
 }

@@ -16,6 +16,7 @@ import {
   IonList,
   IonItem,
   IonLabel,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { MoviesService } from '../../services/movies.service';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -56,6 +57,7 @@ import { FavoritesService } from 'src/app/features/favorites/services/favorites.
     IonItem,
     IonLabel,
     IonButton,
+    IonToast,
   ],
 })
 export class MovieDetailPage {
@@ -64,6 +66,8 @@ export class MovieDetailPage {
   moviesService = inject(MoviesService);
   peopleService = inject(PeopleService);
   favoritesService = inject(FavoritesService);
+  isToastOpen = signal(false);
+  toastMessage = signal('');
 
   backRoute = signal('/movies');
 
@@ -90,6 +94,16 @@ export class MovieDetailPage {
     if (!movie) return;
 
     this.favoritesService.toggleFavorite(movie);
+    if (this.favoritesService.isFavorite(movie.id)) {
+      this.showToast('Added to favorites');
+    } else {
+      this.showToast('Removed from favorites');
+    }
+  }
+
+  showToast(message: string) {
+    this.toastMessage.set(message);
+    this.isToastOpen.set(true);
   }
 
   constructor() {
