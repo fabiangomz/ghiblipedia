@@ -56,4 +56,9 @@ export class FavoritesService {
       this.addFavorite(movie);
     }
   }
+
+  clearAll() {
+    this.favorites.set([]);
+    this.saveToStorage();
+  }
 }
