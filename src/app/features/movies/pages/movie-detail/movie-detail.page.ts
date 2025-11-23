@@ -1,6 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
 import {
   IonContent,
   IonHeader,
@@ -14,7 +12,6 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonCardSubtitle,
   IonCardContent,
   IonList,
   IonItem,
@@ -22,7 +19,7 @@ import {
 } from '@ionic/angular/standalone';
 import { MoviesService } from '../../services/movies.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import {
   calendarOutline,
@@ -32,11 +29,10 @@ import {
   starOutline,
   filmOutline,
   peopleOutline,
+  heart,
 } from 'ionicons/icons';
 import { PeopleService } from '../../services/people.service';
-import { catchError, forkJoin, Observable, of } from 'rxjs';
-import { Person } from '../../interfaces/person.interface';
-import { HttpClient } from '@angular/common/http';
+import { FavoritesService } from 'src/app/features/favorites/services/favorites.service';
 
 @Component({
   selector: 'app-movie-detail',
@@ -50,8 +46,6 @@ import { HttpClient } from '@angular/common/http';
     IonToolbar,
     IonBackButton,
     IonButtons,
-    CommonModule,
-    FormsModule,
     IonIcon,
     IonSpinner,
     IonCard,
@@ -61,13 +55,17 @@ import { HttpClient } from '@angular/common/http';
     IonList,
     IonItem,
     IonLabel,
+    IonButton,
   ],
 })
 export class MovieDetailPage {
   route = inject(ActivatedRoute);
+  router = inject(Router);
   moviesService = inject(MoviesService);
   peopleService = inject(PeopleService);
-  private http = inject(HttpClient);
+  favoritesService = inject(FavoritesService);
+
+  backRoute = signal('/movies');
 
   movieResource = rxResource({
     params: () => ({}),
@@ -87,7 +85,22 @@ export class MovieDetailPage {
     stream: ({ params }) => this.peopleService.getPeople(params.urls),
   });
 
+  toggleFavorite() {
+    const movie = this.movieResource.value();
+    if (!movie) return;
+
+    this.favoritesService.toggleFavorite(movie);
+  }
+
   constructor() {
+    const state = history.state;
+
+    console.log('Navigation state:', state);
+
+    if (state?.['from'] === 'favorites') {
+      this.backRoute.set('/favorites');
+    }
+
     addIcons({
       calendarOutline,
       personOutline,
@@ -96,6 +109,7 @@ export class MovieDetailPage {
       starOutline,
       filmOutline,
       peopleOutline,
+      heart,
     });
   }
 }

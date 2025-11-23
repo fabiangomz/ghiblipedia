@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Favourites</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Favorites</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  @if (favoritesService.getFavorites()().length > 0) {
+  <ion-grid>
+    <ion-row>
+      @for (movie of favoritesService.getFavorites()(); track movie.id) {
+      <ion-col size="6" size-md="4" size-lg="3">
+        <ion-card [routerLink]="['/movie', movie.id]" [state]="{ from: 'favorites' }" button="true">
+          <img [src]="movie.image" [alt]="movie.title" />
+          <ion-card-header>
+            <ion-card-title>{{ movie.title }}</ion-card-title>
+            <ion-card-subtitle>{{ movie.original_title }}</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
+  } @else {
+  <div class="ion-padding ion-text-center" style="margin-top: 100px;">
+    <ion-icon name="heart-outline" size="large" color="medium"></ion-icon>
+    <h2>You don't have favorite movies</h2>
+    <p>Click the heart icon in the movie details to add to favorites.</p>
+    <ion-button [routerLink]="['/movies']" fill="outline">
+      Browse Movies
+    </ion-button>
+  </div>
+  }
+</ion-content>

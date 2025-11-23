@@ -23,7 +23,9 @@ export const routes: Routes = [
       {
         path: 'favorites',
         loadComponent: () =>
-          import('../favorites/favorites.page').then((m) => m.FavoritesPage),
+          import(
+            '../features/favorites/pages/favorites-list/favorites-list.page'
+          ).then((m) => m.FavoritesListPage),
       },
       {
         path: 'search',
