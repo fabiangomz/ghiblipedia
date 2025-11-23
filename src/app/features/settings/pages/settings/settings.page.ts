@@ -14,9 +14,9 @@ import {
   IonAlert,
   IonToast,
 } from '@ionic/angular/standalone';
-import { FavoritesService } from '../features/favorites/services/favorites.service';
-import { ThemeService } from '../features/settings/services/theme-service.service';
-import { ExportService } from '../features/favorites/services/export.service';
+import { FavoritesService } from '../../../favorites/services/favorites.service';
+import { ThemeService } from '../../../settings/services/theme-service.service';
+import { ExportService } from '../../../favorites/services/export.service';
 
 @Component({
   selector: 'app-settings',
