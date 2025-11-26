@@ -2,7 +2,7 @@
 
 A mobile application built with Ionic and Angular about Studio Ghibli movies.
 
-> **Academic Project**: This application was developed as a final project for the Master's degree in **Mobile Computing** to demonstrate proficiency in mobile application development using the Ionic Framework along Angular.
+This application was developed as a final project for the Master's degree in Mobile Computing to demonstrate proficiency in mobile application development using the Ionic Framework along Angular.
 
 ## About the Project
 
@@ -23,7 +23,7 @@ Ghiblipedia is a cross-platform mobile app that provides information about Studi
 - **[Ionic](https://ionicframework.com/)**
 - **[Capacitor](https://capacitorjs.com/)**
 
-## 📁 Project Structure
+## Project Structure
 
 The application follows a feature-based architecture:
 
@@ -91,7 +91,6 @@ Make sure you have the following installed:
    ```
 
 3. **Install iOS dependencies** (if building for iOS)
-
    ```bash
    cd ios/App
    pod install
@@ -149,7 +148,6 @@ The app implements **tab-based navigation** with nested routing:
   - `/tabs/settings` - Settings page
 
 - **Nested Routes**:
-
   - `/tabs/movies/:id` - Movie detail page (with route parameter)
 
 ### Data Persistence
