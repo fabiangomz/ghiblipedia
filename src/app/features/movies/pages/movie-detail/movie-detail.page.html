@@ -3,12 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="backRoute()"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ movieResource.value()?.title }}</ion-title>
+    <ion-title>{{ movie?.title }}</ion-title>
     <ion-buttons slot="end">
-      @if (movieResource.hasValue()) {
+      @if (movie) {
       <ion-button (click)="toggleFavorite()">
-        <ion-icon [name]="favoritesService.isFavorite(movieResource.value().id) ? 'heart' : 'heart-outline'"
-          color="danger" slot="icon-only">
+        <ion-icon [name]="favoritesService.isFavorite(movie.id) ? 'heart' : 'heart-outline'" color="danger"
+          slot="icon-only">
         </ion-icon>
       </ion-button>
       }
@@ -19,14 +19,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  @if (movieResource.isLoading()) {
+  @if (!movie) {
   <div class="ion-padding ion-text-center">
     <ion-spinner></ion-spinner>
   </div>
   }
 
-  @if (movieResource.hasValue()) {
-  <img [src]="movieResource.value().image" [alt]="movieResource.value().title" />
+  @if (movie) {
+  <img [src]="movie.image" [alt]="movie.title" />
   <ion-card>
 
     <ion-card-content>
@@ -35,60 +35,60 @@
           <ion-icon name="film-outline" slot="start"></ion-icon>
           <ion-label>
             <h3>Original Title</h3>
-            <p>{{ movieResource.value().original_title }}</p>
+            <p>{{ movie.original_title }}</p>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-icon name="calendar-outline" slot="start"></ion-icon>
           <ion-label>
             <h3>Release Year</h3>
-            <p>{{ movieResource.value().release_date }}</p>
+            <p>{{ movie.release_date }}</p>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-icon name="person-outline" slot="start"></ion-icon>
           <ion-label>
             <h3>Director</h3>
-            <p>{{ movieResource.value().director }}</p>
+            <p>{{ movie.director }}</p>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-icon name="create-outline" slot="start"></ion-icon>
           <ion-label>
             <h3>Producer</h3>
-            <p>{{ movieResource.value().producer }}</p>
+            <p>{{ movie.producer }}</p>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-icon name="time-outline" slot="start"></ion-icon>
           <ion-label>
             <h3>Running Time</h3>
-            <p>{{ movieResource.value().running_time }} minutes</p>
+            <p>{{ movie.running_time }} minutes</p>
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-icon name="star-outline" slot="start"></ion-icon>
           <ion-label>
             <h3>Rotten Tomatoes Score</h3>
-            <p>{{ movieResource.value().rt_score }}%</p>
+            <p>{{ movie.rt_score }}%</p>
           </ion-label>
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <!-- Description -->
+  <!----------DESCRIPTION------------>
   <ion-card>
     <ion-card-header>
       <ion-card-title>Description</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      {{ movieResource.value().description }}
+      {{ movie.description }}
     </ion-card-content>
   </ion-card>
 
-  <!-- People -->
-  @if (peopleResource.hasValue() && peopleResource.value().length > 0) {
+  <!-----------PEOPLE----------->
+  @if (people && people.length > 0) {
   <ion-card>
     <ion-card-header>
       <ion-card-title>
@@ -98,7 +98,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        @for (person of peopleResource.value(); track person?.id) {
+        @for (person of people; track person?.id) {
         @if (person) {
         <ion-item>
           <ion-label>
@@ -114,7 +114,7 @@
   </ion-card>
   }
 
-  @if (peopleResource.isLoading()) {
+  @if (!people) {
   <ion-card>
     <ion-card-content class="ion-text-center">
       <ion-spinner></ion-spinner>
@@ -128,13 +128,6 @@
 
   }
 
-  @if (movieResource.error()) {
-  <ion-card color="danger">
-    <ion-card-content>
-      <p>Error loading movie details</p>
-    </ion-card-content>
-  </ion-card>
-  }
 </ion-content><ion-toast [isOpen]="isToastOpen()" [message]="toastMessage()" positionAnchor="tab-bar" [duration]="2000"
   position="bottom" (didDismiss)="isToastOpen.set(false)">
 </ion-toast>

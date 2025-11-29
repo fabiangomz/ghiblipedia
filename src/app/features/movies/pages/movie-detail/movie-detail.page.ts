@@ -19,7 +19,6 @@ import {
   IonToast,
 } from '@ionic/angular/standalone';
 import { MoviesService } from '../../services/movies.service';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import {
@@ -34,6 +33,8 @@ import {
 } from 'ionicons/icons';
 import { PeopleService } from '../../services/people.service';
 import { FavoritesService } from 'src/app/features/favorites/services/favorites.service';
+import { Movie } from '../../interfaces/movie.interface';
+import { Person } from '../../interfaces/person.interface';
 
 @Component({
   selector: 'app-movie-detail',
@@ -66,31 +67,16 @@ export class MovieDetailPage {
   moviesService = inject(MoviesService);
   peopleService = inject(PeopleService);
   favoritesService = inject(FavoritesService);
+  movie: Movie | null = null;
+  people: (Person | null)[] = [];
+
   isToastOpen = signal(false);
   toastMessage = signal('');
 
   backRoute = signal('/movies');
 
-  movieResource = rxResource({
-    params: () => ({}),
-    stream: () => {
-      const id = this.route.snapshot.paramMap.get('id') || '';
-      return this.moviesService.getMovie(id);
-    },
-  });
-
-  peopleResource = rxResource({
-    params: () => {
-      // algunas películas devuelven URLs inválidas, sin id.
-      const urls = this.movieResource.value()?.people || [];
-      const validUrls = urls.filter((url) => /\/[^\/]+$/.test(url));
-      return { urls: validUrls };
-    },
-    stream: ({ params }) => this.peopleService.getPeople(params.urls),
-  });
-
   toggleFavorite() {
-    const movie = this.movieResource.value();
+    const movie = this.movie;
     if (!movie) return;
 
     this.favoritesService.toggleFavorite(movie);
@@ -106,11 +92,26 @@ export class MovieDetailPage {
     this.isToastOpen.set(true);
   }
 
+  loadMovie() {
+    const movieId = this.route.snapshot.paramMap.get('id') || '';
+    this.moviesService.getMovie(movieId).subscribe((movie) => {
+      this.movie = movie;
+
+      const urls = this.movie.people || [];
+      const validUrls = urls.filter((url) => /\/[^\/]+$/.test(url));
+      try {
+        this.peopleService.getPeople(validUrls).then((people) => {
+          this.people = people;
+        });
+      } catch (error) {
+        console.error('Error loading people:', error);
+      }
+    });
+  }
+
   constructor() {
+    this.loadMovie();
     const state = history.state;
-
-    console.log('Navigation state:', state);
-
     if (state?.['from'] === 'favorites') {
       this.backRoute.set('/favorites');
     }

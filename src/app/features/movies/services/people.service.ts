@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, firstValueFrom, forkJoin, Observable, of } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Person } from '../interfaces/person.interface';
 
@@ -15,13 +15,19 @@ export class PeopleService {
   getPerson(id: string): Observable<Person> {
     return this.http.get<Person>(`${baseUrl}/people/${id}`);
   }
-  getPeople(urls: string[]): Observable<(Person | null)[]> {
-    if (urls.length === 0) return of([]);
 
-    const requests = urls.map((url) =>
-      this.http.get<Person>(url).pipe(catchError(() => of(null)))
-    );
+  async getPeople(urls: string[]): Promise<(Person | null)[]> {
+    if (urls.length === 0) return [];
 
-    return forkJoin(requests);
+    const promises = urls.map(async (url) => {
+      try {
+        return await firstValueFrom(this.http.get<Person>(url));
+      } catch (error) {
+        console.error(`Failed to fetch ${url}`, error);
+        return null;
+      }
+    });
+
+    return Promise.all(promises);
   }
 }

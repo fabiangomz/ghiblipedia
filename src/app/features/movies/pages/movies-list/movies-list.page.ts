@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import {
   IonContent,
@@ -7,7 +7,6 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { MoviesService } from '../../services/movies.service';
-import { rxResource } from '@angular/core/rxjs-interop';
 import {
   IonButton,
   IonIcon,
@@ -15,8 +14,8 @@ import {
   IonLabel,
   IonThumbnail,
 } from '@ionic/angular/standalone';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { addIcons } from 'ionicons';
+import { RouterLink } from '@angular/router';
+import { Movie } from '../../interfaces/movie.interface';
 
 @Component({
   selector: 'app-movies-list',
@@ -38,9 +37,11 @@ import { addIcons } from 'ionicons';
 })
 export class MoviesListPage {
   moviesService = inject(MoviesService);
+  movies: Movie[] = [];
 
-  moviesResource = rxResource({
-    params: () => ({}),
-    stream: () => this.moviesService.getMovies(),
-  });
+  constructor() {
+    this.moviesService.getMovies().subscribe((data) => {
+      this.movies = data;
+    });
+  }
 }

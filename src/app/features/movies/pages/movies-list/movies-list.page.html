@@ -9,9 +9,10 @@
     <ion-toolbar>
       <ion-title size="large">Movies</ion-title>
     </ion-toolbar>
+
   </ion-header>
 
-  @for (movie of moviesResource.value(); track movie.id) {
+  @for (movie of movies; track movie.id) {
   <ion-item lines="full" [routerLink]="['/movie', movie.id]" button="true">
     <ion-thumbnail slot="start">
       <img [src]="movie.image" [alt]="movie.title" />
