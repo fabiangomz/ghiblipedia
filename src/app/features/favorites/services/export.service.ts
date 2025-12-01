@@ -9,11 +9,12 @@ import { Capacitor } from '@capacitor/core';
 })
 export class ExportService {
   favoritesService = inject(FavoritesService);
-  private favorites = this.favoritesService.getFavorites();
+
   platform = Capacitor.getPlatform();
 
   exportToCSV() {
-    if (this.favorites.length === 0) {
+    const favorites = this.favoritesService.getFavorites();
+    if (favorites.length === 0) {
       return null;
     }
 
@@ -26,7 +27,7 @@ export class ExportService {
       'Rotten Tomatoes Score',
     ];
 
-    const rows = this.favorites.map((movie) => [
+    const rows = favorites.map((movie) => [
       this.escapeCsvValue(movie.title),
       this.escapeCsvValue(movie.original_title),
       this.escapeCsvValue(movie.director),
