@@ -1,14 +1,11 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Movie } from '../../movies/interfaces/movie.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FavoritesService {
-  private favorites = signal<Movie[]>([]);
-  favoriteIds = computed(() => new Set(this.favorites().map((m) => m.id)));
-
-  favoriteCount = computed(() => this.favorites().length);
+  private favorites: Movie[] = [];
 
   constructor() {
     this.loadFromStorage();
@@ -18,35 +15,36 @@ export class FavoritesService {
     const stored = localStorage.getItem('ghiblipedia-favorites');
     if (stored) {
       try {
-        this.favorites.set(JSON.parse(stored));
+        this.favorites = JSON.parse(stored);
       } catch (error) {
         console.error('Error loading favorites:', error);
       }
     }
   }
+
   private saveToStorage() {
     localStorage.setItem(
       'ghiblipedia-favorites',
-      JSON.stringify(this.favorites())
+      JSON.stringify(this.favorites)
     );
   }
 
   private addFavorite(movie: Movie) {
-    this.favorites.update((favs) => [...favs, movie]);
+    this.favorites = [...this.favorites, movie];
     this.saveToStorage();
   }
 
   private removeFavorite(movieId: string) {
-    this.favorites.update((favs) => favs.filter((m) => m.id !== movieId));
+    this.favorites = this.favorites.filter((m) => m.id !== movieId);
     this.saveToStorage();
   }
 
-  getFavorites() {
-    return this.favorites.asReadonly();
+  getFavorites(): Movie[] {
+    return [...this.favorites];
   }
 
   isFavorite(movieId: string): boolean {
-    return this.favoriteIds().has(movieId);
+    return this.favorites.some((m) => m.id === movieId);
   }
 
   toggleFavorite(movie: Movie) {
@@ -58,7 +56,7 @@ export class FavoritesService {
   }
 
   clearAll() {
-    this.favorites.set([]);
+    this.favorites = [];
     this.saveToStorage();
   }
 }

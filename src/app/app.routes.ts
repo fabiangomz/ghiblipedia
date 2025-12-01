@@ -6,4 +6,9 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./layout/tabs/tabs.routes').then((m) => m.routes),
   },
+  {
+    path: '**',
+    redirectTo: '/movies',
+    pathMatch: 'full',
+  },
 ];

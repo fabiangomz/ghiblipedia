@@ -11,10 +11,10 @@
     </ion-toolbar>
   </ion-header>
 
-  @if (favoritesService.getFavorites()().length > 0) {
+  @if (favoritesService.getFavorites().length > 0) {
   <ion-grid>
     <ion-row>
-      @for (movie of favoritesService.getFavorites()(); track movie.id) {
+      @for (movie of favoritesService.getFavorites(); track movie.id) {
       <ion-col size="6" size-md="4" size-lg="3">
         <ion-card [routerLink]="['/movie', movie.id]" [state]="{ from: 'favorites' }" button="true">
           <img [src]="movie.image" [alt]="movie.title" />

@@ -19,7 +19,7 @@ import {
   IonToast,
 } from '@ionic/angular/standalone';
 import { MoviesService } from '../../services/movies.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { addIcons } from 'ionicons';
 import {
   calendarOutline,
@@ -63,7 +63,6 @@ import { Person } from '../../interfaces/person.interface';
 })
 export class MovieDetailPage {
   route = inject(ActivatedRoute);
-  router = inject(Router);
   moviesService = inject(MoviesService);
   peopleService = inject(PeopleService);
   favoritesService = inject(FavoritesService);

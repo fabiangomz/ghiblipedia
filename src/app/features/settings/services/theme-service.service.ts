@@ -1,10 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  isDarkMode = signal(false);
+  isDarkMode = false;
 
   constructor() {
     this.loadTheme();
@@ -20,12 +20,12 @@ export class ThemeService {
   }
 
   setDarkMode(isDark: boolean) {
-    this.isDarkMode.set(isDark);
+    this.isDarkMode = isDark;
     document.documentElement.classList.toggle('ion-palette-dark', isDark);
     localStorage.setItem('darkMode', isDark.toString());
   }
 
   toggleDarkMode() {
-    this.setDarkMode(!this.isDarkMode());
+    this.setDarkMode(!this.isDarkMode);
   }
 }

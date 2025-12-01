@@ -13,7 +13,7 @@ export class ExportService {
   platform = Capacitor.getPlatform();
 
   exportToCSV() {
-    if (this.favorites().length === 0) {
+    if (this.favorites.length === 0) {
       return null;
     }
 
@@ -26,7 +26,7 @@ export class ExportService {
       'Rotten Tomatoes Score',
     ];
 
-    const rows = this.favorites().map((movie) => [
+    const rows = this.favorites.map((movie) => [
       this.escapeCsvValue(movie.title),
       this.escapeCsvValue(movie.original_title),
       this.escapeCsvValue(movie.director),

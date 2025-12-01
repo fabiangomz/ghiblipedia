@@ -5,15 +5,13 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
-} from '@ionic/angular/standalone';
-import { MoviesService } from '../../services/movies.service';
-import {
   IonButton,
   IonIcon,
   IonItem,
   IonLabel,
   IonThumbnail,
 } from '@ionic/angular/standalone';
+import { MoviesService } from '../../services/movies.service';
 import { RouterLink } from '@angular/router';
 import { Movie } from '../../interfaces/movie.interface';
 
