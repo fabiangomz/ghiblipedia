@@ -19,7 +19,7 @@ import {
   IonToast,
 } from '@ionic/angular/standalone';
 import { MoviesService } from '../../services/movies.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import {
   calendarOutline,
@@ -63,16 +63,17 @@ import { Person } from '../../interfaces/person.interface';
 })
 export class MovieDetailPage {
   route = inject(ActivatedRoute);
+  router = inject(Router);
   moviesService = inject(MoviesService);
   peopleService = inject(PeopleService);
   favoritesService = inject(FavoritesService);
   movie: Movie | null = null;
   people: (Person | null)[] = [];
 
-  isToastOpen = signal(false);
-  toastMessage = signal('');
+  isToastOpen = false;
+  toastMessage = '';
 
-  backRoute = signal('/movies');
+  backRoute = '/movies';
 
   toggleFavorite() {
     const movie = this.movie;
@@ -87,8 +88,8 @@ export class MovieDetailPage {
   }
 
   showToast(message: string) {
-    this.toastMessage.set(message);
-    this.isToastOpen.set(true);
+    this.toastMessage = message;
+    this.isToastOpen = true;
   }
 
   loadMovie() {
@@ -112,7 +113,7 @@ export class MovieDetailPage {
     this.loadMovie();
     const state = history.state;
     if (state?.['from'] === 'favorites') {
-      this.backRoute.set('/favorites');
+      this.backRoute = '/favorites';
     }
 
     addIcons({

@@ -12,8 +12,8 @@ const baseUrl = environment.baseUrl;
 export class PeopleService {
   private http = inject(HttpClient);
 
-  getPerson(id: string): Observable<Person> {
-    return this.http.get<Person>(`${baseUrl}/people/${id}`);
+  getPerson(url: string): Observable<Person> {
+    return this.http.get<Person>(url);
   }
 
   async getPeople(urls: string[]): Promise<(Person | null)[]> {
@@ -21,7 +21,7 @@ export class PeopleService {
 
     const promises = urls.map(async (url) => {
       try {
-        return await firstValueFrom(this.http.get<Person>(url));
+        return await firstValueFrom(this.getPerson(url));
       } catch (error) {
         console.error(`Failed to fetch ${url}`, error);
         return null;

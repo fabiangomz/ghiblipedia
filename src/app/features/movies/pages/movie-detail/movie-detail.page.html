@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button [defaultHref]="backRoute()"></ion-back-button>
+      <ion-back-button [defaultHref]="backRoute"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ movie?.title }}</ion-title>
     <ion-buttons slot="end">
@@ -128,6 +128,6 @@
 
   }
 
-</ion-content><ion-toast [isOpen]="isToastOpen()" [message]="toastMessage()" positionAnchor="tab-bar" [duration]="2000"
-  position="bottom" (didDismiss)="isToastOpen.set(false)">
+</ion-content><ion-toast [isOpen]="isToastOpen" [message]="toastMessage" positionAnchor="tab-bar" [duration]="2000"
+  position="bottom" (didDismiss)="isToastOpen = false">
 </ion-toast>

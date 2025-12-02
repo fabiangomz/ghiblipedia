@@ -43,8 +43,8 @@ export class SettingsPage {
   favoritesService = inject(FavoritesService);
   exportService = inject(ExportService);
   themeService = inject(ThemeService);
-  isToastOpen = signal(false);
-  toastMessage = signal('');
+  isToastOpen = false;
+  toastMessage = '';
 
   public alertButtons = [
     {
@@ -76,7 +76,7 @@ export class SettingsPage {
   }
 
   showToast(message: string) {
-    this.toastMessage.set(message);
-    this.isToastOpen.set(true);
+    this.toastMessage = message;
+    this.isToastOpen = true;
   }
 }

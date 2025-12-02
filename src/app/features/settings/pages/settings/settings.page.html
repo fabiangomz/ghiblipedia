@@ -35,6 +35,6 @@
 
 
 
-</ion-content> <ion-toast [isOpen]="isToastOpen()" [message]="toastMessage()" positionAnchor="tab-bar" [duration]="2000"
-  position="bottom" (didDismiss)="isToastOpen.set(false)">
+</ion-content> <ion-toast [isOpen]="isToastOpen" [message]="toastMessage" positionAnchor="tab-bar" [duration]="2000"
+  position="bottom" (didDismiss)="isToastOpen = false">
 </ion-toast>
